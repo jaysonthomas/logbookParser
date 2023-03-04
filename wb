@@ -1,0 +1,74 @@
+Interesting fields
+1.
+<title>Drake</title>
+
+2. 
+<meta name="Drake">
+
+3. 
+<link rel="canonical" href="https://jaysonthomas.github.io/interviewPrep.html" />
+
+4.
+<script type="text/javascript" src="../../notes.js"></script>
+
+5.
+<script src="../../notes-mathjax-config.js" defer></script> 
+
+6.
+<script type="text/javascript" id="MathJax-script" defer
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+7.
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css">
+
+8.
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+
+9.
+<link rel="stylesheet" type="text/css" href="../../notes.css" />
+
+10.
+<h1><a href="../../index.html" style="text-decoration:none;">Logbook</a></h1>
+
+11.
+<p style="font-size: 18px;"><a href="../../bio/jjwt.html">Jayson Wynne-Thomas</a></p>
+
+12.
+<p style="font-size: 14px; text-align: right;"> 
+  Last modified <span id="last_modified"></span>.</br>
+  <script>
+  var d = new Date(document.lastModified);
+  document.getElementById("last_modified").innerHTML = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();</script>
+</p>
+
+13.
+<a class="previous_chapter"></a></td>
+
+14.
+<a href=../../index.html>Chapter root</a></td>
+
+15.
+<a class="next_chapter" href=robot.html>Next Chapter</a>
+
+16.
+<div id="main" class="sidebar1">
+  <span style="font-size:10px;cursor:pointer" onclick="openNav()">&#9776;</span>
+</div>
+
+17.
+<div id="mySidenav" class="sidebar">
+  <a href="#1">Installation</a>
+  <a href="#2">Temporary way of running Drake locally</a>
+  <a href="#3">Learning resources</a>
+  <a href="#4">Executing drake cpp examples</a>
+  <a href="#7">Reflected inertia tutorial in cpp</a>
+  <a href="#10">Questions & todo</a>
+</div>
+
+Steps involved:
+Modify certain fields based on file location
+Read all sections/subsections and add to sidebar.
+Prev/Next chapters decision
+
+
