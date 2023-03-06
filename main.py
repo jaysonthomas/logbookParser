@@ -1,10 +1,11 @@
+# Example usage: clear; python3 main.py /home/jayson/logbook
 import os
 import os.path as path
 import re
+import sys
 
-def getHeader(levelFromStart):
+def getHeader(levelFromStart, title):
   relPath = '../' * (levelFromStart)
-  title = 'testTitle'
   logbookJs = relPath + 'logbook.js'
   logbookMathJaxJs = relPath + 'logbook-mathjax-config.js'
   logbookCss = relPath + 'logbook.css'
@@ -100,8 +101,7 @@ def getFooter():
 def writeHeaderSidebarAndFooter(levelFromStart, file):
   content = ''
   body = ''
-  header = getHeader(levelFromStart)
-
+  title = ''
   isMainBodyContent = 0
   sideDict = {}
   sectionHeading = ''
@@ -112,57 +112,61 @@ def writeHeaderSidebarAndFooter(levelFromStart, file):
       if (line.find('<chapter') == -1) & (isMainBodyContent == 0):
         continue
       
-      isMainBodyContent = 1
+      try:
+        if (isMainBodyContent == 0):
+          title = re.search(r'<h1>(.*)</h1>', line).group(1)
+          isMainBodyContent = 1 
 
-      if (line.find('<section') != -1):
-        sid += 1
-        ssid = -1
-        sectionHeading = re.search(r'<h1>(.*)</h1>', line).group(1)
-        if sectionHeading != None:
-          sideDict[sectionHeading] = []
-        line = f'<section id="{sid}"><h1>{sectionHeading}</h1>\n'
-      elif (line.find('<subsection') != -1):
-        ssid += 1
-        subsectionHeading = re.search(r'<h1>(.*)</h1>', line).group(1)
-        if subsectionHeading != None:
-          sideDict[sectionHeading].append(subsectionHeading)
-        line = f'  <subsection id="{sid}.{ssid}"><h1>{subsectionHeading}</h1>\n'
-      elif (line.find('</chapter') != -1):
-        body += line
-        break
-  
+        if (line.find('<section') != -1):
+          sid += 1
+          ssid = -1
+          
+          sectionHeading = re.search(r'<h1>(.*)</h1>', line).group(1)
+          if sectionHeading != None:
+            sideDict[sectionHeading] = []
+          line = f'<section id="{sid}"><h1>{sectionHeading}</h1>\n'
+        elif (line.find('<subsection') != -1):
+          ssid += 1
+          subsectionHeading = re.search(r'<h1>(.*)</h1>', line).group(1)
+          if subsectionHeading != None:
+            sideDict[sectionHeading].append(subsectionHeading)
+          line = f'  <subsection id="{sid}.{ssid}"><h1>{subsectionHeading}</h1>\n'
+        elif (line.find('</chapter') != -1):
+          body += line
+          break
+      except AttributeError:
+        print(f'{line} in {file}\n\n')
       body += line
+
+  header = getHeader(levelFromStart, title)
   sidebar = getSidebar(sideDict)
   footer = getFooter()
+  
   content = header + sidebar + body + footer
   
   with open(file, 'w', encoding='utf-8') as f:        
     f.writelines(content)
 
-startpath = '/home/jayson/P/logbookParser'
-for root, dirs, files in os.walk(startpath):
-  if (('.git' in root) or ('parserIgnore' in root)):
-    continue
-  elif (root == startpath):
-    levelFromStart = 0
+if __name__ == "__main__":
+  fileCount = 0
+  if (len(sys.argv) != 2):
+    print(f'Need 2 arguments\n')
   else:
-    levelFromStart = root.replace(startpath, '').count(path.sep)
-    
-  for f in files:
-    if ('.html' not in f):
-      continue
-    writeHeaderSidebarAndFooter(levelFromStart, root+path.sep+f)
+    startpath = sys.argv[1]
+    for root, dirs, files in os.walk(startpath):
+      if (('.git' in root) or ('toBin' in root) or ('bio' in root)):
+        continue
+      elif (root == startpath):
+        levelFromStart = 0
+      else:
+        levelFromStart = root.replace(startpath, '').count(path.sep)
+        
+      for f in files:
+        if (('.html' not in f) or 
+            ('slides' in root and f!='main.html')):
+          continue
+        fileCount += 1
+        print(root+path.sep+f)
+        writeHeaderSidebarAndFooter(levelFromStart, root+path.sep+f)
 
-# a = {}
-
-# k = 'test'
-# a[k] = []
-# for i in a.items():
-#   print(i)
-
-# print(type(a[k]))
-# a[k].append('blah')
-# print(type(a))
-# a[k].append('blah2')
-# for i in a.items():
-#   print(i)
+  print(f'Total file count: {fileCount}.\n')
