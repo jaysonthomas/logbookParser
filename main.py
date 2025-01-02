@@ -1,4 +1,22 @@
+# Removing last part of the header for now.
+# <table style="width:100%;" pdf="no"><tr style="width:100%">
+#   <td style="width:33%;text-align:left;">
+#     <a class="previous_chapter" href="{prevPage}">Prev Chapter</a>
+#   </td>
+  
+#   <td style="width:33%;text-align:center;">
+#     <a href="{rootPage}">Root Chapter</a>
+#   </td>
+  
+#   <td style="width:33%;text-align:right;">
+#     <a class="next_chapter" href="{nextPage}">Next Chapter</a>
+#   </td>
+# </tr></table>
+
 # Example usage: clear; python3 main.py /home/jayson/logbook
+# Do not add a forward slash at the end.
+# TODO: Remove forward slash at the end of path if 1 is specified.
+# 
 import os
 import os.path as path
 import re
@@ -10,7 +28,7 @@ def getHeader(levelFromStart, title):
   logbookMathJaxJs = relPath + 'logbook-mathjax-config.js'
   logbookCss = relPath + 'logbook.css'
   mainPage = relPath + 'index.html'
-  bioPage = relPath + 'bio/jjwt.html'
+  bioPage = relPath + 'pages/bio/jjwt.html'
   prevPage = ''
   rootPage = ''
   nextPage = ''
@@ -31,6 +49,8 @@ def getHeader(levelFromStart, title):
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.4.0/mermaid.min.js"></script>
+  <script> mermaid.initialize({{startOnLoad: true}}); </script>  
 
   <link rel="stylesheet" type="text/css" href="{logbookCss}" />
 </head>
@@ -49,20 +69,6 @@ def getHeader(levelFromStart, title):
       </p>
     </header>
   </div>
-
-  <table style="width:100%;" pdf="no"><tr style="width:100%">
-    <td style="width:33%;text-align:left;">
-      <a class="previous_chapter" href="{prevPage}">Prev Chapter</a>
-    </td>
-    
-    <td style="width:33%;text-align:center;">
-      <a href="{rootPage}">Root Chapter</a>
-    </td>
-    
-    <td style="width:33%;text-align:right;">
-      <a class="next_chapter" href="{nextPage}">Next Chapter</a>
-    </td>
-  </tr></table>
   '''
   return header
 
@@ -147,6 +153,13 @@ def writeHeaderSidebarAndFooter(levelFromStart, file):
   with open(file, 'w', encoding='utf-8') as f:        
     f.writelines(content)
 
+def inIgnoreList(file, root):
+  if (('.html' not in file) or 
+      ('slides' in root and file!='main.html') or
+      ('mindmaps' in root and file!='main.html')):
+    return True
+  return False
+
 if __name__ == "__main__":
   fileCount = 0
   if (len(sys.argv) != 2):
@@ -154,7 +167,7 @@ if __name__ == "__main__":
   else:
     startpath = sys.argv[1]
     for root, dirs, files in os.walk(startpath):
-      if (('.git' in root) or ('toBin' in root) or ('bio' in root)):
+      if (('.git' in root) or ('toBin' in root)):
         continue
       elif (root == startpath):
         levelFromStart = 0
@@ -162,8 +175,7 @@ if __name__ == "__main__":
         levelFromStart = root.replace(startpath, '').count(path.sep)
         
       for f in files:
-        if (('.html' not in f) or 
-            ('slides' in root and f!='main.html')):
+        if (inIgnoreList(f, root)):
           continue
         fileCount += 1
         print(root+path.sep+f)
