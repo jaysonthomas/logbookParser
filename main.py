@@ -28,13 +28,12 @@ def getHeader(levelFromStart, title):
   logbookMathJaxJs = relPath + 'logbook-mathjax-config.js'
   logbookCss = relPath + 'logbook.css'
   mainPage = relPath + 'index.html'
-  bioPage = relPath + 'pages/bio/jjwt.html'
+  bioPage = relPath + 'bio.html'
   prevPage = ''
   rootPage = ''
   nextPage = ''
 
-  header = f'''
-<!DOCTYPE html>
+  header = f'''<!DOCTYPE html>
 <html>
 <head>
   <title>{title}</title>
@@ -167,7 +166,7 @@ if __name__ == "__main__":
   else:
     startpath = sys.argv[1]
     for root, dirs, files in os.walk(startpath):
-      if (('.git' in root) or ('toBin' in root)):
+      if (('.git' in root) or ('toBin' in root) or ('jlib/code' in root)):
         continue
       elif (root == startpath):
         levelFromStart = 0
@@ -177,6 +176,7 @@ if __name__ == "__main__":
       for f in files:
         if (inIgnoreList(f, root)):
           continue
+
         fileCount += 1
         print(root+path.sep+f)
         writeHeaderSidebarAndFooter(levelFromStart, root+path.sep+f)
