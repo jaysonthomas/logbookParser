@@ -28,7 +28,8 @@ def getHeader(levelFromStart, title):
   logbookMathJaxJs = relPath + 'logbook-mathjax-config.js'
   logbookCss = relPath + 'logbook.css'
   mainPage = relPath + 'index.html'
-  bioPage = relPath + 'bio.html'
+  bioPage = relPath + 'pages/bio/main.html'
+  print(f"{bioPage}")
   prevPage = ''
   rootPage = ''
   nextPage = ''
