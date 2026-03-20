@@ -17,6 +17,10 @@
 # Do not add a forward slash at the end.
 # TODO: Remove forward slash at the end of path if 1 is specified.
 # 
+# Mermaid stuff
+# <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.4.0/mermaid.min.js"></script>
+# <script> mermaid.initialize({{startOnLoad: true}}); </script>  
+
 import os
 import os.path as path
 import re
@@ -29,7 +33,6 @@ def getHeader(levelFromStart, title):
   logbookCss = relPath + 'logbook.css'
   mainPage = relPath + 'index.html'
   bioPage = relPath + 'pages/bio/main.html'
-  print(f"{bioPage}")
   prevPage = ''
   rootPage = ''
   nextPage = ''
@@ -48,9 +51,18 @@ def getHeader(levelFromStart, title):
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.4.0/mermaid.min.js"></script>
-  <script> mermaid.initialize({{startOnLoad: true}}); </script>  
+  <script>
+      // Use 'load' or 'DOMContentLoaded' to be safe
+      window.addEventListener('DOMContentLoaded', () => {{
+          // Trim whitespace from all code blocks
+          document.querySelectorAll('pre code').forEach((block) => {{
+              block.textContent = block.textContent.trim();
+          }});
+
+          // Now tell highlight.js to color the cleaned text
+          hljs.highlightAll();
+      }});
+  </script>
 
   <link rel="stylesheet" type="text/css" href="{logbookCss}" />
 </head>
