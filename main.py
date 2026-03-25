@@ -51,18 +51,7 @@ def getHeader(levelFromStart, title):
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
-  <script>
-      // Use 'load' or 'DOMContentLoaded' to be safe
-      window.addEventListener('DOMContentLoaded', () => {{
-          // Trim whitespace from all code blocks
-          document.querySelectorAll('pre code').forEach((block) => {{
-              block.textContent = block.textContent.trim();
-          }});
-
-          // Now tell highlight.js to color the cleaned text
-          hljs.highlightAll();
-      }});
-  </script>
+  <script src="{logbookJs}" defer></script>
 
   <link rel="stylesheet" type="text/css" href="{logbookCss}" />
 </head>
