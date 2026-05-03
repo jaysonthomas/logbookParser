@@ -149,7 +149,7 @@ def writeHeaderSidebarAndFooter(levelFromStart, file):
   sidebar = getSidebar(sideDict)
   footer = getFooter()
   
-  content = header + sidebar + body + footer
+  content = header + body + footer
   
   with open(file, 'w', encoding='utf-8') as f:        
     f.writelines(content)
