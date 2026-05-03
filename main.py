@@ -26,6 +26,25 @@ import os.path as path
 import re
 import sys
 
+def getNewHeader(levelFromStart, title):
+  relPath = '../' * (levelFromStart)
+  header = f'''<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" type="text/css" href="{relPath}logbook.css" />
+  <script src= "{relPath}setup.js"></script>
+  <script>
+    initializePage("{title}", "{relPath}");
+  </script>
+</head>
+
+<body onload="loadChapter('');">
+'''
+
+  return header
+
 def getHeader(levelFromStart, title):
   relPath = '../' * (levelFromStart)
   logbookJs = relPath + 'logbook.js'
@@ -145,7 +164,7 @@ def writeHeaderSidebarAndFooter(levelFromStart, file):
         print(f'{line} in {file}\n\n')
       body += line
 
-  header = getHeader(levelFromStart, title)
+  header = getNewHeader(levelFromStart, title)
   sidebar = getSidebar(sideDict)
   footer = getFooter()
   
@@ -180,6 +199,7 @@ if __name__ == "__main__":
           continue
 
         fileCount += 1
+        # print(f"{root}, {path.sep}, {f}")
         print(root+path.sep+f)
         writeHeaderSidebarAndFooter(levelFromStart, root+path.sep+f)
 
